@@ -1,9 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Github_logo from './download.png';
-const useStyles = makeStyles((theme) => ({
+const Styles =(theme) => ({
   root: {
    
        margin: theme.spacing(1),
@@ -28,10 +28,22 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft:'25%'
      
   }
-}));
+});
 
-export default function BasicTextFields() {
-  const classes = useStyles();
+class BasicTextFields extends React.Component {
+    constructor(props){
+        super()
+        this.state=({text:""})
+    }
+    handleInputChange = e => {
+		this.setState({
+            text: e.target.value,
+            
+        });
+        console.log(this.state.text)
+	};
+  render(){
+      const {classes}=this.props
 
   return (
       <div className={classes.maindiv}>
@@ -41,7 +53,7 @@ export default function BasicTextFields() {
       <br/>
     <form  noValidate autoComplete="off" >
       
-      <TextField id="outlined-basic" className={classes.root} label="Username" variant="outlined" />
+      <TextField id="outlined-basic" className={classes.root} label="Username" variant="outlined" onChange={this.handleInputChange} />
       <Button variant="contained" color="primary" className={classes.Submitbtn} >
         Submit
       </Button>
@@ -49,3 +61,5 @@ export default function BasicTextFields() {
     </div>
   );
 }
+}
+export default (withStyles)(Styles)(BasicTextFields);
