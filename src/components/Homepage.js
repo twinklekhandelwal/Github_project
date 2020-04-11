@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Github_logo from './download.png';
 import axios from 'axios';
+import UserRepos from "./Userrepos"
 const Styles = (theme) => ({
     root: {
 
@@ -58,8 +59,10 @@ class BasicTextFields extends React.Component {
             params: {
                 q: this.state.text,
             },
+            
         });
-        console.log(response)
+        this.setState({GithubProfile: response.data.items})
+        
     }
     render() {
         const { classes } = this.props
@@ -79,6 +82,8 @@ class BasicTextFields extends React.Component {
                         Submit
       </Button>
                 </form>
+                {this.state.GithubProfile !== '' && (
+					<UserRepos {...this.state} />)}
             </div>
         );
     }
