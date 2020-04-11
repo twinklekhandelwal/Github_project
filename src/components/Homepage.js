@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Github_logo from './download.png';
+import axios from 'axios';
 const Styles =(theme) => ({
   root: {
    
@@ -40,8 +41,18 @@ class BasicTextFields extends React.Component {
             text: e.target.value,
             
         });
-        console.log(this.state.text)
-	};
+        
+    };
+    handleSubmit = async e => {
+        e.preventDefault();
+        console.log("twi")
+		const response = await axios.get('https://api.github.com/search/users', {
+			params: {
+				q: this.state.text,
+			},
+        });
+        console.log(response)
+    }
   render(){
       const {classes}=this.props
 
@@ -51,7 +62,7 @@ class BasicTextFields extends React.Component {
       <img src={Github_logo} alt="logo"/>
       </div>
       <br/>
-    <form  noValidate autoComplete="off" >
+    <form  noValidate autoComplete="off" onSubmit={this.handleSubmit.bind(this)}>
       
       <TextField id="outlined-basic" className={classes.root} label="Username" variant="outlined" onChange={this.handleInputChange} />
       <Button variant="contained" color="primary" className={classes.Submitbtn} >
