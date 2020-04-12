@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Github_logo from './download.png';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 import UserRepos from "./Userrepos"
 const Styles = (theme) => ({
     root: {
@@ -23,7 +24,7 @@ const Styles = (theme) => ({
     maindiv: {
         position: 'absolute',
         left: '30%',
-        top: '30%',
+        // top: '20%',
     },
     logo: {
         // position: 'absolute', 
@@ -40,12 +41,13 @@ const Styles = (theme) => ({
 class BasicTextFields extends React.Component {
     constructor(props) {
         super()
-        this.state = ({ text: "" })
+        this.state = ({ text: "" ,GithubProfile:"",UserRepos:""})
     }
     handleInputChange = e => {
         const re = /^[0-9\b]+$/;
-        const regex = /[A-Za-z]/;
-      if ((e.target.value === '' || re.test(e.target.value)) || regex.test(e.target.value)) {
+        const regex =/[A-Za-z]/
+        
+      if ((e.target.value === '' || re.test(e.target.value)) || (e.target.value === '' || regex.test(e.target.value))) {
          this.setState({text: e.target.value})
       
    
@@ -54,14 +56,16 @@ class BasicTextFields extends React.Component {
     };
     handleSubmit = async e => {
         e.preventDefault();
-        console.log("twi")
+        // console.log("twi")
         const response = await axios.get('https://api.github.com/search/users', {
             params: {
                 q: this.state.text,
             },
             
         });
-        this.setState({GithubProfile: response.data.items})
+        const resp = await axios.get(`https://api.github.com/users/${this.state.text}/repos`);
+        console.log(resp)
+        this.setState({GithubProfile: response.data.items,UserRepos:resp.data})
         
     }
     render() {
@@ -73,11 +77,11 @@ class BasicTextFields extends React.Component {
                     <img src={Github_logo} alt="logo" />
                 </div>
                 <br />
-                <form noValidate autoComplete="off" onSubmit={this.handleSubmit.bind(this)}>
+                <form noValidate autoComplete="off" >
 
                     <TextField id="outlined-basic" className={classes.root} label="Username" variant="outlined"
                      onChange={this.handleInputChange} value={this.state.text} />
-                    <Button variant="contained" color="primary" className={classes.Submitbtn}
+                     <Button variant="contained" color="primary" className={classes.Submitbtn}
                         onClick={this.handleSubmit} disabled={!this.state.text}>
                         Submit
       </Button>
