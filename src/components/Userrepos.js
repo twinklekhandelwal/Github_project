@@ -9,7 +9,22 @@ import Divider from '@material-ui/core/Divider';
 import Buttons from "./button"
 const Styles = (theme) => ({
     container: {
-        display: "flex"
+        display: "flex",
+
+        position: 'absolute',
+        left: "20%",
+        [theme.breakpoints.up('md')]: {
+            display: "flex",
+            top: "10%",
+            position: 'absolute',
+            left: "2%"
+        },
+        [theme.breakpoints.up('lg')]: {
+            display: "flex",
+            top: "10%",
+            position: 'absolute',
+            left: "20%"
+        },
     },
     profilecontainer: {
         height: 500,
@@ -19,6 +34,7 @@ const Styles = (theme) => ({
 
         width: '300px',
         top: "30%",
+
 
     },
     username: {
@@ -30,7 +46,7 @@ const Styles = (theme) => ({
 
         fontSize: "18px",
         padding: theme.spacing(1),
-        //  position: 'absolute',
+
 
         backgroundColor: "#eff3f6",
 
@@ -38,11 +54,12 @@ const Styles = (theme) => ({
 
 
     },
-    cardcontainer:{
-    marginLeft: '50px'
-    },
     repocard: {
-        width: '80ch', marginLeft: '50px', margin: theme.spacing(1),
+        marginLeft: '50px', margin: theme.spacing(1),
+
+    },
+    repocards: {
+        width: '80ch', marginLeft: '50px', margin: theme.spacing(1)
     },
     buttondisplay: {
         display: "flex"
@@ -50,7 +67,8 @@ const Styles = (theme) => ({
 
     },
     projectinfo: {
-        width: "60%"
+        width: "60%",
+
     },
     projectname: {
         fontSize: '20px', textDecoration: 'none', color: "#0366d6"
@@ -63,38 +81,41 @@ const Styles = (theme) => ({
         color: 'black',
 
     },
-    projectlanguage:{
-     fontSize: '15px' 
+
+    projectlanguage: {
+        fontSize: '15px'
     },
-    projectdescription:{
-         fontSize: '13px' 
+    projectdescription: {
+        fontSize: '16px'
     },
-    watchers:{
+    watchers: {
         backgroundColor: '#d9534f',
         padding: '3px 10px 3px 10px'
     },
-    star:{
-         backgroundColor: '#4CAF50 ',
-         padding: '3px 10px 3px 10px'
+    star: {
+        backgroundColor: '#4CAF50 ',
+        padding: '3px 10px 3px 10px'
     },
-    fork:{
-        
-            backgroundColor: '#0275d8',
-            padding: '3px 10px 3px 10px'
-            
-    
+    fork: {
+
+        backgroundColor: '#0275d8',
+        padding: '3px 10px 3px 10px'
+
+
     },
     viewlink: {
         textDecoration: "none",
 
     },
-   
-    
-   
-    
+
+
+
+
     starbtn: {
         marginLeft: "150px",
-
+        [theme.breakpoints.only('md')]: {
+            marginLeft: "1px",
+        }
     },
 
     divider: {
@@ -102,14 +123,8 @@ const Styles = (theme) => ({
         width: "210px",
         marginTop: "20px"
 
-
     },
-   
-   
-
 });
-
-
 class GithubRepo extends React.Component {
     constructor(props) {
         super(props);
@@ -117,13 +132,12 @@ class GithubRepo extends React.Component {
         this.state = { isOpen: false }
 
     }
-
-
     toggle = (e) => {
         console.log(e)
         this.setState(
-           { isOpen: !this.state.isOpen
-        });
+            {
+                isOpen: !this.state.isOpen
+            });
     }
 
     render() {
@@ -148,88 +162,73 @@ class GithubRepo extends React.Component {
                         </a>
 
                     </div>
-
-
                 ))}
                 <div className={classes.cardcontainer}>
 
                     {UserRepos.map(profile => (
-                        <Card className={classes.repocard}>
-                            <CardContent >
-                                <Typography color="textSecondary" gutterBottom>
+                        <div className={classes.repocards}>
+                            <Card className={classes.repocard}>
+                                <CardContent >
+                                    <Typography color="textSecondary" gutterBottom>
 
-                                    <div className={classes.buttondisplay}>
-                                        <div className={classes.projectinfo}>
-                                            <a
-                                                className={classes.projectname}
-                                                href={profile.html_url}
-
-                                                target="_blank"
-                                                rel="noopener noreferrer">
-                                                {profile.name}
-                                            </a>
-                                            <p>
+                                        <div className={classes.buttondisplay}>
+                                            <div className={classes.projectinfo}>
                                                 <a
+                                                    className={classes.projectname}
                                                     href={profile.html_url}
-                                                    className={classes.projectlink}
+
                                                     target="_blank"
                                                     rel="noopener noreferrer">
-                                                    {profile.full_name}
+                                                    {profile.name}
                                                 </a>
-                                            </p>
-                                            <p className={classes.projectdescription}>{profile.description}</p>
-                                            
-                                            
-                                            <p className={classes.projectlanguage}>{profile.language}</p>
-                                            {/* <div style={{
-											marginLeft:"10px",
-											
-											
-										}}>
-                                             <span className={classes.fork}
-										>
-										{profile.forks_count}Fork
-									</span>
-									<span className={classes.watchers}>
-										{profile.watchers_count}watchers
-									</span>
-									<span className={classes.star}>
-										{profile.stargazers_count}star
-									</span>
-                                    </div> */}
-                                        </div>
-                                        
-									 
-                                        <div className={classes.starbtn} >
-                                            <Buttons
+                                                <p>
+                                                    <a
+                                                        href={profile.html_url}
+                                                        className={classes.projectlink}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer">
+                                                        {profile.full_name}
+                                                    </a>
+                                                </p>
+                                                <Typography className={classes.projectdescription}>{profile.description}</Typography>
 
-                                                name={this.state.isOpen ? "Unstar" : "Star"}
-                                                toggle={this.toggle}
-                                                className={classes.starbtns} />
-                                            <Divider className={classes.divider} />
-                                            <div style={{
-                                            marginLeft:"10px",
-                                            marginTop:"30px"
-											
-											
-										}}>
-                                             <span className={classes.fork}
-										>
-										{profile.forks_count}Fork
+
+                                                <Typography className={classes.projectlanguage}>{profile.language}</Typography>
+
+                                            </div>
+
+
+                                            <div className={classes.starbtn} >
+                                                <Buttons
+
+                                                    name={this.state.isOpen ? "Unstar" : "Star"}
+                                                    toggle={this.toggle}
+                                                    className={classes.starbtns} />
+                                                <Divider className={classes.divider} />
+                                                <div style={{
+                                                    marginLeft: "10px",
+                                                    marginTop: "30px"
+
+
+                                                }}>
+                                                    <span className={classes.fork}
+                                                    >
+                                                        {profile.forks_count}Fork
 									</span>
-									<span className={classes.watchers}>
-										{profile.watchers_count}watchers
+                                                    <span className={classes.watchers}>
+                                                        {profile.watchers_count}watchers
 									</span>
-									<span className={classes.star}>
-										{profile.stargazers_count}star
+                                                    <span className={classes.star}>
+                                                        {profile.stargazers_count}star
 									</span>
-                                    </div>
-                                            
+                                                </div>
+
+                                            </div>
                                         </div>
-                                    </div>
-                                </Typography>
-                            </CardContent>
-                        </Card>
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </div>
                     ))}
                 </div>
             </div>

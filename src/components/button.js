@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   starbtn: {
-    marginLeft: "64px", 
-    width: "66%", 
+    marginLeft: "84px",
+    width: "53%",
     height: "30px"
   },
 }))

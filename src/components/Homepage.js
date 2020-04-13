@@ -6,13 +6,15 @@ import Button from '@material-ui/core/Button';
 import Github_logo from './download.png';
 import axios from 'axios';
 
+
 import UserRepos from "./Userrepos"
 const Styles = (theme) => ({
     container: {
         position: 'absolute',
+        top: '20%',
         left: '30%',[theme.breakpoints.down('xs')]: {left:"0%"
     }
-        // top: '20%',
+        
     },
     logo: {
 
@@ -20,30 +22,20 @@ const Styles = (theme) => ({
 
     },
     inputbox: {
-        // paddingLeft:"4px",
-        //  padding: theme.spacing(1, 1, 1, -3),
-          // vertical padding + font size from searchIcon
-        //    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        //   transition: theme.transitions.create('width'),
-         
+        
         margin: theme.spacing(1),
         width: '70ch',
 
      [theme.breakpoints.down('sm')]: {
-        // paddingLeft:"4px",
-        // margin: theme.spacing(1),
+        
         width: '20ch',
     },
     [theme.breakpoints.only('md')]: {
-        // paddingLeft:"4px",
+       
         margin: theme.spacing(1),
         width: '50ch',
     },
-    // [theme.breakpoints.up('lg')]: {
-    //     // paddingLeft:"4px",
-    //     margin: theme.spacing(1),
-    //     width: '70ch',
-    // },
+    
 },
     submitbtn: {
 
@@ -54,14 +46,12 @@ const Styles = (theme) => ({
     }
 
     },
-   
-   
 });
 
 class BasicForm extends React.Component {
     constructor(props) {
         super()
-        this.state = ({ Text: "", GithubProfile: "", UserRepos: "" })
+        this.state = ({ Text: "", GithubProfile: "", UserRepos: "" ,showDetail:false})
         
     }
     handleInputChange = e => {
@@ -77,7 +67,7 @@ class BasicForm extends React.Component {
     };
     handleSubmit = async e => {
         e.preventDefault();
-        // console.log("twi")
+       
         const response = await axios.get('https://api.github.com/search/users', {
             params: {
                 q: this.state.Text,
@@ -86,24 +76,24 @@ class BasicForm extends React.Component {
         });
         const resp = await axios.get(`https://api.github.com/users/${this.state.Text}/repos`);
         console.log(resp)
-        this.setState({ GithubProfile: response.data.items, UserRepos: resp.data })
+        this.setState({ GithubProfile: response.data.items, UserRepos: resp.data,showDetail:true})
 
     }
     render() {
         const { classes } = this.props
 
         return (
+            <div>
+            {!this.state.showDetail ? 
             <div className={classes.container}>
                 <div className={classes.logo}>
                     <img src={Github_logo} alt="logo" />
                 </div>
                 <br />
-
+               
                 <form noValidate autoComplete="off" >
-                {/* <div className={classes.search}>
-                <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div> */}
+                
+                
                     <TextField id="outlined-basic" className={classes.inputbox} label="Username" variant="outlined"
                         onChange={this.handleInputChange} value={this.state.Text} InputProps={{
                             endAdornment: (
@@ -117,10 +107,11 @@ class BasicForm extends React.Component {
                         onClick={this.handleSubmit} disabled={!this.state.Text} >
                         Submit
       </Button>
-      {/* </div> */}
+      
                 </form>
-                {this.state.GithubProfile !== '' && (
-                    <UserRepos {...this.state} />)}
+                
+                </div>
+             :<UserRepos {...this.state} />}
             </div>
         );
     }
